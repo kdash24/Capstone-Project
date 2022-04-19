@@ -1,0 +1,116 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Let's first get the data:
+
+```{r}
+state <- read.csv("our_state_by_state_data.csv")
+state$state_name <- sub(".", "", state$state_name)
+state$abb <- c("AL", "AK", 'AZ',"AR",'CA','CO',"CT","DE","FL","GA","HI","ID","IL",'IN',"IA",'KS','KY','LA',"ME",'MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC',"ND",'OH','OK','OR','PA','RI','SC','SD','TN','TX','UT',"VT",'VA','WA','WV','WI','WY')
+```
+
+Now, make a USA heat map for the garbage recycled in 2018
+
+```{r}
+library(ggplot2)
+
+ggplot(state, aes(x=Garbage_disposed_2018_per_state)) + 
+  geom_histogram(breaks = seq(0, 1, by = 0.05), color="darkred", fill="red") +
+  labs(title="Plastic Disposal rate in 2018 Count", x="Rate of Plastic Disposal",
+       y="State Count") +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_x_continuous(breaks = seq(0, 1, by=0.1)) +
+  scale_y_continuous(breaks = seq(0, 10, by=2))
+
+jpeg(file="Recycling Histogram.jpeg")
+ggplot(state, aes(x=Garbage_recycled_2018_rate_per_state)) + 
+  geom_histogram(breaks = seq(0, 1, by = 0.05), color="green", fill="dark green") + theme_bw() +
+  labs(title="Plastic Recycling rate in 2018 Count", x="Rate of Plastic Recycling",
+       y="State Count") +
+  theme(plot.title = element_text(hjust = 0.5, size=20),axis.title.y= element_text(size=20),axis.text = element_text(size=16), axis.title.x= element_text(size=20)) + 
+  scale_x_continuous(breaks = seq(0, 1, by=0.1)) +
+  scale_y_continuous(breaks = seq(0, 10, by=2))
+dev.off()
+
+ggplot(state[1:10,], aes(x=abb,y=Garbage_disposed_2018_per_state)) + 
+  geom_bar(stat="identity", color="red", fill="red") + 
+  labs(title="Plastic Disposal rate in 2018 per State",
+                                   x="State", y="Plastic Disposal Rate") +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+
+ggplot(state[11:20,], aes(x=abb,y=Garbage_disposed_2018_per_state)) + 
+  geom_bar(stat="identity", color="red", fill="red") + 
+  labs(title="Plastic Disposal rate in 2018 per State",
+                                   x="State", y="Plastic Disposal Rate") +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+
+ggplot(state[21:30,], aes(x=abb,y=Garbage_disposed_2018_per_state)) + 
+  geom_bar(stat="identity", color="red", fill="red") + 
+  labs(title="Plastic Disposal rate in 2018 per State",
+                                   x="State", y="Plastic Disposal Rate") +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+
+ggplot(state[31:40,], aes(x=abb,y=Garbage_disposed_2018_per_state)) + 
+  geom_bar(stat="identity", color="red", fill="red") + 
+  labs(title="Plastic Disposal rate in 2018 per State",
+                                   x="State", y="Plastic Disposal Rate") +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+
+ggplot(state[41:50,], aes(x=abb,y=Garbage_disposed_2018_per_state)) + 
+  geom_bar(stat="identity", color="red", fill="red") + 
+  labs(title="Plastic Disposal rate in 2018 per State",
+                                   x="State", y="Plastic Disposal Rate") +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+
+jpeg(file="First 10 States Rates.jpeg")
+ggplot(state[1:10,], aes(x=abb,y=Garbage_recycled_2018_rate_per_state)) + 
+  geom_bar(stat="identity", color="green", fill="dark green") + 
+  labs(title="Plastic Recycle rate in 2018 per State",
+                                   x="State", y="Plastic Recycle Rate") +ylim(0,1) + theme_bw() +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5,size = 25),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+dev.off()
+
+jpeg(file="First 20 States Rates.jpeg")
+ggplot(state[11:20,], aes(x=abb,y=Garbage_recycled_2018_rate_per_state)) + 
+  geom_bar(stat="identity", color="green", fill="dark green") + 
+  labs(title="Plastic Recycle rate in 2018 per State",
+                                   x="State", y="Plastic Recycle Rate") +ylim(0,1) + theme_bw() +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5,size = 25),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+dev.off()
+
+jpeg(file="Last 30 States Rates.jpeg")
+ggplot(state[21:30,], aes(x=abb,y=Garbage_recycled_2018_rate_per_state)) + 
+  geom_bar(stat="identity", color="green", fill="dark green") + 
+  labs(title="Plastic Recycle rate in 2018 per State",
+                                   x="State", y="Plastic Recycle Rate") +ylim(0,1) + theme_bw() +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5,size = 25),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+dev.off()
+
+jpeg(file="Last 20 States Rates.jpeg")
+ggplot(state[31:40,], aes(x=abb,y=Garbage_recycled_2018_rate_per_state)) + 
+  geom_bar(stat="identity", color="green", fill="dark green") + 
+  labs(title="Plastic Recycle rate in 2018 per State",
+                                   x="State", y="Plastic Recycle Rate") +ylim(0,1) +theme_bw() +
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5,size = 25),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+dev.off()
+
+jpeg(file="Last 10 States Rates.jpeg")
+ggplot(state[41:50,], aes(x=abb,y=Garbage_recycled_2018_rate_per_state)) + 
+  geom_bar(stat="identity", color="green", fill="dark green") + 
+  labs(title="Plastic Recycle rate in 2018 per State",
+                                   x="State", y="Plastic Recycle Rate") + ylim(0,1) + theme_bw() + 
+  theme(axis.text.x = element_text(angle = 30, size=18, color="black"),
+        plot.title = element_text(hjust = 0.5,size = 25),axis.title.y= element_text(size=20),axis.text = element_text(size=18), axis.title.x= element_text(size=20))
+dev.off()
+```

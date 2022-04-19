@@ -1,0 +1,59 @@
+---
+title: "Data Creation File"
+output: html_notebook
+---
+
+Reading in csv with the population below
+
+```{r}
+Census_data <- read.csv("../Cmda Capstone/Census Population.csv")
+```
+
+Next I will create two arrays one with the list of states names and one with the population values
+```{r}
+States <- Census_data$ï..table.with.row.headers.in.column.A.and.column.headers.in.rows.3.through.4...leading.dots.indicate.sub.parts.
+States <- as.character((States))
+States <- States[-52:-58]
+Pop_2018 <- Census_data$X.10
+Pop_2018 <- gsub(",", "", Pop_2018)
+Pop_2018 <- as.integer(Pop_2018)
+Pop_2018 <- Pop_2018[-1:-8]
+Pop_2018 <- Pop_2018[-52:-58]
+DC_pop <- Pop_2018[9]
+```
+
+Next I need to remove the District of Columbia label then add their population to Virginia
+
+```{r}
+States <- States[-9]
+States
+DC_pop
+Pop_2018 <- Pop_2018[-9]
+#Pop_2018[47] <- Pop_2018[47] + DC_pop
+```
+
+```{r}
+Garbage_generates_per_capita <- c(349,302,325,340,376,341,382,397,388,363,394,340,380,357,363,363,345,336,376,309,378,352,331,343,359,335,371,333,380,394,326,290,338,386,265,335,341,365,318,347,363,355,307,347,317,300,262,342,355,333)
+
+Garbage_disposed_per_capita <- c(265,248,196,234,172,229,129,159,215,222,203,208,254,233,120,223,255,239,91,181,177,210,125,280,185,215,201,192,207,148,229,122,161,250,193,230,111,136,132,217,223,273,211,205,116,171,102,237,207,214)
+
+Garbage_recycled_per_capita <- c(84,53,129,105,204,112,252,238,173,141,191,132,126,125,233,141,90,97,285,128,201,142,206,63,174,121,170,141,173,247,97,168,177,136,72,105,230,229,186,129,140,82,96,143,201,129,160,148,119)
+
+```
+
+
+```{r}
+petbot <- c(18.8, 14.7, 18.1, 18.8, 18.6, 26.3, 22.2, 18.8, 28.3, 22.4, 26.3, 18.8, 21.8, 20.8, 21.3, 17.4, 23.1, 18.8, 20.9, 24.7, 17.4, 15.2, 10.9, 18.8, 17.4, 18.8, 17.4,18.8, 17.9, 24.3, 18.8, 26.1, 20.1, 17.4, 20.8, 18.8, 9, 22.4, 15.3, 22.4, 17.4, 18.8, 18.7, 18.8, 17.9, 22.5, 11.2, 22.4, 20.8, 18.8)
+
+totalpet <- Pop_2018 * petbot
+
+totalpet/2000
+(sum(totalpet)/2000)/1000
+
+
+2991.094/3130
+
+
+```
+
+

@@ -1,0 +1,119 @@
+---
+title: "Plastic analysis"
+output: html_notebook
+---
+
+Copying in data by hand from the file
+
+```{r}
+Types <- c("PET", 'HDPE', 'PVC', 'LDPE', 'PP','PS','Other')
+```
+
+
+Durable and NonDurable goods 
+```{r}
+
+Durable_generated <- c(660, 1590,180,2130,4590,760,3780)
+Durable_recycled <- 930
+Durable_combustion <- 1740
+Durable_landfill <- 11020
+
+NonDur_generated <- c(770, 230+690,270, 20+1000+1710,160+1570,820+130,20)
+NonDur_recycled <- 180
+NonDur_combustion <- 980
+NonDur_landfill <- 4040
+
+Plates_cups <- c(0,0,0,20,160,820,0)
+Trash_Bags <- c(0,230,0,1000,0,0,0)
+
+```
+
+
+Plastic Containers & Packaging
+```{r}
+Tot_pack_generated <- c(3860,3790,390,3730,1830,550,360)
+Tot_pack_recycled <- c(980,560,0,370,50,20,0)
+Tot_pack_combusted <- 2460
+Tot_pack_landfill <- 10090
+
+
+Bottles_Jars_generated <- c(3130,750,0,0,0,0,0)
+Bottles_Jars_recyeled <- c(910,220,0,0,0,0,0)
+Bottles_Jars_combusted <- c(440,100,0,0,0,0,0)
+Bottles_Jars_landfill <- c(1780,430,0,0,0,0,0)
+
+other_containers_generated <- c(0,1600,20,40,250,80,0)
+other_containers_recycled <- c(0,290,0,0,20,0,310)
+
+bags_wraps_generated <- c(0,640,70,2780,570,140,0)
+bags_wraps_recycled <- c(0,50,0,370,0,0,0)
+
+plastic_packaging_generated <- c(730,800,300,910,1010,330,360)
+plastic_packaging_reyccled <- c(70,0,0,0,30,20,0)
+```
+
+
+
+TOTAL PLASTIC IN MSW
+_Neglibible is less thna 5000 tons_
+```{r}
+Total_generated <- c(5290, 6300, 840, 8590, 8150, 2260, 4160)
+Total_recycled <- c(980, 560, 0, 370, 50, 20, 1110)
+Total_combusted <- 5620
+Total_landfill <- 26970
+
+Total_recycled/Total_generated
+```
+
+ratios
+```{r}
+Dur_Ratio <- Durable_generated/Total_generated
+NonDur_Ration <- NonDur_generated/Total_generated
+
+plates_ratio <- Plates_cups/NonDur_generated
+Trash_bags_ratio <- Trash_Bags/NonDur_generated
+
+Bottles_gen_ratio <- Bottles_Jars_generated/Tot_pack_generated
+Bottles_rec_ratio <- Bottles_Jars_recyeled/Tot_pack_recycled
+Bottles_com_ratio <- Bottles_Jars_combusted/Tot_pack_generated
+Bottels_land_ratio <- Bottles_Jars_landfill/Tot_pack_landfill
+
+other_gen_ratio <- other_containers_generated/Tot_pack_generated
+other_rec_ratio <- other_containers_recycled/Tot_pack_recycled
+
+bags_gen_ratio <- bags_wraps_generated/Tot_pack_generated
+bags_rec_ratio <- bags_wraps_recycled/Tot_pack_recycled
+
+pack_gen_ratio <- plastic_packaging_generated/Tot_pack_generated
+pack_rec_ratio <- plastic_packaging_reyccled/Tot_pack_recycled
+```
+
+```{r}
+library(ggplot2)
+data <- data.frame(Types, Total_recycled/Total_generated)
+names(data) <- c("Types", "Ratios")
+data <- data[order(data$Ratios, decreasing=T),]
+jpeg(file="Plastic Types Recycling Rate.jpeg")
+ggplot(data, aes(x= reorder(Types,-Ratios), y=Ratios)) + geom_col(fill = "Dark Green")+ scale_y_continuous(labels = scales::percent) + theme(axis.text=element_text(size=12),axis.title=element_text(size=14)) + xlab("Plastic Types") + ylab("Recycling Rate") + ggtitle("Recycling Rates for Top 7 Plastics")
+dev.off()
+
+```
+
+
+
+```{r}
+require(scales)
+data2 <- data.frame(Types, Total_generated*2000)
+names(data2) <- c("Types", "Weight")
+jpeg(file="Plastic Types Generation.jpeg")
+ggplot(data2, aes(x= reorder(Types,-Weight), y=Weight)) + geom_col(fill = "Dark Red") +  scale_y_continuous(labels = comma)+ theme(axis.text=element_text(size=12),axis.title=element_text(size=14)) + xlab("Plastic Types") + ylab("Total Weight") + ggtitle("Total Weight of Generated Material for Top 7 Plastics")
+dev.off()
+
+
+```
+
+```{r}
+t.test(Total_generated, Total_recycled)
+```
+
+

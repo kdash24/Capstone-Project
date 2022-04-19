@@ -1,0 +1,109 @@
+---
+title: "Tools and Techniques"
+author: "Kyle Deisher"
+date: "10/30/21"
+output:
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+  html_document: default
+graphics: yes
+---
+
+#First I will demonstrate what a multivariate bubble plot looks like and how one is created.
+
+
+
+
+#One multivariate plot that is very specific and used in our project is the United States plot which I will demonstrate how to create and modify below
+
+
+#Line plots are used to show how variables change over time adn these plots can also display multiple variables as well
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(gganimate)
+library(ggthemes)
+library(babynames)
+```
+
+
+#Sections of this graph can still be confusing to interpret like the male babies for perdominately female names and vice versa but can be understood better when adding some animation.
+
+```{r}
+library(gifski)
+library(transformr)
+Data_3 <- Data_2[1:150,]
+plot <- ggplot(data = Data_2, aes(x=year, y=n, color=sex,linetype=name)) + geom_line(size=1.2)+ xlab("Year") + ylab("Number of Babies") + ggtitle("Number of Babieswith the names Ashley, Adam, or Helen") + theme(axis.text.x = element_text(size=16), axis.title.x = element_text(size=18), axis.text.y = element_text(size=16), axis.title.y = element_text(size=18), legend.text = element_text(size=16), legend.key.size = unit(1,'cm'), legend.title = element_text(size=16), plot.title = element_text(size=14))
+plot
+#animate(plot, renderer = gifski_renderer(), duration =20)
+```
+
+
+
+
+
+
+
+
+#Changing the variables of color and name allow you to show the needed variables in different ways
+
+```{r}
+Data_3 <- Data_2[1:150,]
+plot <- ggplot(data = Data_2, aes(x=year, y=n, color=name,linetype=sex)) + geom_line(size=1.2)+ xlab("Year") + ylab("Number of Babies") + ggtitle("Number of Babies with the names Ashley, Adam, or Helen") + theme(axis.text.x = element_text(size=16), axis.title.x = element_text(size=18), axis.text.y = element_text(size=16), axis.title.y = element_text(size=18), legend.text = element_text(size=16), legend.key.size = unit(1,'cm'), legend.title = element_text(size=16), plot.title = element_text(size=14))
+plot
+#animate(plot, renderer = gifski_renderer(), duration =20)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Downsides of multivariate line graphs Also I increase the FPS to 24 since the default is 10 which can look slightly choppy but had to speed up the duration due to rendering time
+```{r}
+Data_4<- babynames %>% filter(name %in% c("Ashley", "Adam", "Helen", "Ethan", "Tom", "John", "Michelle", "Jane"))
+plot4 <- ggplot(data = Data_4, aes(x=year, y=n, color=name,linetype=sex)) + geom_line(size=1.2) + transition_reveal(year)+ xlab("Year") + ylab("Number of Babies") + ggtitle("Number of Babies over the years") + theme(axis.text.x = element_text(size=16), axis.title.x = element_text(size=18), axis.text.y = element_text(size=16), axis.title.y = element_text(size=18), legend.text = element_text(size=16), legend.key.size = unit(1,'cm'), legend.title = element_text(size=16), plot.title = element_text(size=14))
+animate(plot4, renderer = gifski_renderer(), duration =20)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+Data_4<- babynames %>% filter(name %in% c("Ashley", "Adam", "Helen", "Ethan", "Tom", "John", "Michelle", "Jane"))
+plot4 <- ggplot(data = Data_4, aes(x=year, y=n, color=name,linetype=sex)) + geom_line(size=1.2) + transition_reveal(year)+ xlab("Year") + ylab("Number of Babies") + ggtitle("Number of Babies over the years") + theme(axis.text.x = element_text(size=16), axis.title.x = element_text(size=18), axis.text.y = element_text(size=16), axis.title.y = element_text(size=18), legend.text = element_text(size=16), legend.key.size = unit(1,'cm'), legend.title = element_text(size=16), plot.title = element_text(size=14))
+animate(plot4, renderer = gifski_renderer(), duration =5, fps=24)
+```

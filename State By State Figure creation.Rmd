@@ -1,0 +1,71 @@
+---
+title: "State by State Figure creation"
+author: "Kyle Deisher"
+date: "10/6/21"
+output:
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+  html_document: default
+graphics: yes
+---
+
+
+```{r}
+data <- read.csv("../Cmda Capstone/our_state_by_state_data.csv")
+states <- as.character(data$state_name)
+states <- sub(".", "", states)
+states <- (states)
+recycled_rate <- (data$Garbage_recycled_2018_rate_per_state)
+map_data <- data.frame(states, recycled_rate)
+map_data <- t(map_data)
+
+sorted_rate <- data[order(data$Garbage_recycled_2018_rate_per_state,decreasing=TRUE),]
+sorted_rate$state_name <- as.character(sorted_rate$state_name)
+sorted_rate$state_name <- sub(".", "",sorted_rate$state_name)
+sorted_rate$Garbage_recycled_2018_rate_per_state <- sorted_rate$Garbage_recycled_2018_rate_per_state*100
+
+jpeg(file="Top 5 States Rates.jpeg")
+barplot(sorted_rate$Garbage_recycled_2018_rate_per_state[1:5], col='dark green', main ='Top Five Recycling States', xlab="State", ylab="Percentage of Plastic Recycled", names.arg= sorted_rate$state_name[1:5], space=c(3,3,3,3,3), ylim=c(0,100), cex.name=1.3, cex.lab=1.3, cex.main=2, cex.axis = 1.2)
+dev.off()
+
+jpeg(file="Bottom 5 States Rates.jpeg")
+barplot(sorted_rate$Garbage_recycled_2018_rate_per_state[46:50], col='dark green', main ='Worst Five Recycling States', xlab="State", ylab="Percentage of Plastic Recycled", names.arg= sorted_rate$state_name[46:50], space=c(3,3,3,3,3), cex.names=1.2, cex.lab=1.3, cex.main=2,cex.axis=1.2, ylim=c(0,100))
+dev.off()
+```
+
+```{r}
+sum(sorted_rate$Garbage_recycled_2018_rate_per_state>.5)
+
+sum(sorted_rate$Garbage_recycled_2018_rate_per_state<.3)
+
+sorted_weight <- sorted_rate[order(sorted_rate$Garbage_disposed_2018),]
+
+weights <- data.frame(sorted_weight$Garbage_disposed_2018, sorted_weight$Garbage_recycled_2018)
+library(ggplot2)
+```
+
+
+```{r}
+sorted_state <- sorted_rate[order(sorted_rate$state_name,decreasing=FALSE),]
+top_5_weight <- sum(sorted_rate$Garbage_recycled_2018[1:5])/sum(sorted_rate$Garbage_recycled_2018)
+top_5_weight
+bot_5_disposal <- sum(sorted_rate$Garbage_disposed_2018[50:46]/sum(sorted_rate$Garbage_disposed_2018))
+bot_5_disposal
+sorted_rate$Garbage_disposed_2018[50]
+
+sorted_rate$Garbage_recycled_2018[1]/sum(sorted_rate$Garbage_recycled_2018)
+s
+```
+
+
+```{r}
+top_5 <- sorted_rate$Garbage_recycled_2018_rate_per_state[1:5]
+bot_5 <- sorted_rate$Garbage_recycled_2018_rate_per_state[46:50]
+top_5
+bot_5
+
+t.test(top_5, bot_5)
+```
+
+
